@@ -1,0 +1,205 @@
+##Before creating directory
+
+hdoop@bharath:~$ hadoop fs -ls
+Found 3 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:45 copy1
+-rw-r--r--   1 hdoop supergroup          0 2021-05-16 20:43 p1.c
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:33 prog2
+
+
+## creating new direcctory
+hdoop@bharath:~$ hadoop fs -mkdir bharath
+hdoop@bharath:~$ hadoop fs -ls
+Found 4 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:15 bharath
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:45 copy1
+-rw-r--r--   1 hdoop supergroup          0 2021-05-16 20:43 p1.c
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:33 prog2
+
+##Adding two empty files to the newly created directory
+
+hdoop@bharath:~$ hadoop fs -touchz bharath/empty1.txt
+hdoop@bharath:~$ hadoop fs -touchz bharath/empty2.txt
+hdoop@bharath:~$ hadoop fs -ls bharath/
+Found 2 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:18 bharath/empty1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:18 bharath/empty2.txt
+
+
+##Create one more directory by your usn and put that inside the
+directory of your name
+
+hdoop@bharath:~$ hadoop fs -mkdir bharath/1NT18IS040
+hdoop@bharath:~$ hadoop fs -ls bharath/
+Found 3 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:20 bharath/1NT18IS040
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:18 bharath/empty1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:18 bharath/empty2.txt
+
+
+
+
+##Put the file usn_name.txt in your hdfs directory called usn
+
+hdoop@bharath:~$ hadoop fs -ls
+Found 7 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:20 bharath
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:45 copy1
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:17 empty1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:17 empty2.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-16 20:43 p1.c
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:33 prog2
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:30 usn
+
+
+hdoop@bharath:~$ hadoop fs -copyFromLocal bharath_1NT18IS040.txt usn/f1.txt
+hdoop@bharath:~$ hadoop fs -ls usn/
+Found 1 items
+-rw-r--r--   1 hdoop supergroup         45 2021-05-17 00:30 usn/f1.txt
+
+
+#####   Put empty file of hdfs into the local file system ##########
+
+
+hdoop@bharath:~$ ls
+a.out                   Downloads            lab2.txt  Public     Videos
+bharath_1NT18IS040.txt  eclipse-workspace    Music     snap
+Desktop                 hadoop-3.2.1         p1.c      Templates
+Documents               hadoop-3.2.1.tar.gz  Pictures  tmpdata
+
+
+
+hdoop@bharath:~$ hadoop fs -copyToLocal bharath/empty1.txt
+hdoop@bharath:~$ ls
+a.out                   eclipse-workspace    Music     Templates
+bharath_1NT18IS040.txt  empty1.txt           p1.c      tmpdata
+Desktop                 hadoop-3.2.1         Pictures  Videos
+Documents               hadoop-3.2.1.tar.gz  Public
+Downloads               lab2.txt             snap
+
+
+########   Use mv command to move files from local file system and hdfs file system  ##########
+
+
+hdoop@bharath:~$ ls
+a.out                   eclipse-workspace    Music     Templates
+bharath_1NT18IS040.txt  empty1.txt           p1.c      tmpdata
+Desktop                 hadoop-3.2.1         Pictures  Videos
+Documents               hadoop-3.2.1.tar.gz  Public
+Downloads               lab2.txt             snap
+
+
+
+hdoop@bharath:~$ hadoop fs -ls bharath/1NT18IS040/
+
+
+hdoop@bharath:~$ hadoop fs -moveFromLocal p1.c bharath/1NT18IS040/
+2021-05-17 00:38:09,461 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+
+
+hdoop@bharath:~$ hadoop fs -ls bharath/1NT18IS040/
+Found 1 items
+-rw-r--r--   1 hdoop supergroup         70 2021-05-17 00:38 bharath/1NT18IS040/p1.c
+
+
+hdoop@bharath:~$ ls
+a.out                   eclipse-workspace    Music      tmpdata
+bharath_1NT18IS040.txt  empty1.txt           Pictures   Videos
+Desktop                 hadoop-3.2.1         Public
+Documents               hadoop-3.2.1.tar.gz  snap
+Downloads               lab2.txt             Templates
+
+### Mv command for hadoop file system  #########
+hdoop@bharath:~$ hadoop fs -ls
+Found 7 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:20 bharath
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:45 copy1
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:17 empty1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:17 empty2.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-16 20:43 p1.c
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:33 prog2
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:30 usn
+
+
+
+hdoop@bharath:~$ hadoop fs -mv p1.c usn/copy.c
+hdoop@bharath:~$ hadoop fs -ls 
+Found 6 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:20 bharath
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:45 copy1
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:17 empty1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-17 00:17 empty2.txt
+drwxr-xr-x   - hdoop supergroup          0 2021-05-16 21:33 prog2
+drwxr-xr-x   - hdoop supergroup          0 2021-05-17 00:40 usn
+
+
+hdoop@bharath:~$ hadoop fs -ls usn/
+Found 2 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-16 20:43 usn/copy.c
+-rw-r--r--   1 hdoop supergroup         45 2021-05-17 00:30 usn/f1.txt
+
+
+########    Experiment of cp command  ############
+
+
+
+hdoop@bharath:~$ hadoop fs -cat usn/f1.txt
+2021-05-17 00:44:33,108 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+Syntax to list ls command is hadoop fs –ls
+
+
+hdoop@bharath:~$ hadoop fs -cp usn/f1.txt bharath/1NT18IS040/bharath_1nt18is040.txt
+2021-05-17 00:46:09,914 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+2021-05-17 00:46:10,060 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+
+
+
+hdoop@bharath:~$ hadoop fs -cat bharath/1NT18IS040/bharath_1nt18is040.txt
+2021-05-17 00:46:46,326 INFO sasl.SaslDataTransferClient: SASL encryption trust check: localHostTrusted = false, remoteHostTrusted = false
+Syntax to list ls command is hadoop fs –ls
+
+
+
+
+##########   Display the total size of all the files in name directory ##############
+
+
+
+hdoop@bharath:~$ hadoop fs -du bharath/
+115  115  bharath/1NT18IS040
+0    0    bharath/empty1.txt
+0    0    bharath/empty2.txt
+
+ 
+##############   Display each file size in usn directory  ##############
+
+
+hdoop@bharath:~$ hadoop fs -du bharath/1NT18IS040/
+45  45  bharath/1NT18IS040/bharath_1nt18is040.txt
+70  70  bharath/1NT18IS040/p1.c
+
+
+
+################    Use stat command on name and usn directories ########################
+
+
+
+
+hdoop@bharath:~$ hadoop fs -stat bharath/
+2021-05-16 18:50:03
+
+ 
+hdoop@bharath:~$ hadoop fs -stat bharath/1NT18IS040/
+2021-05-16 19:16:10
+
+
+
+
+
+
+#########         Illustrate the use of append command     ##########
+
+
+
+
+
